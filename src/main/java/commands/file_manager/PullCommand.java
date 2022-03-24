@@ -1,4 +1,6 @@
-package commands;
+package commands.file_manager;
+
+import commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;

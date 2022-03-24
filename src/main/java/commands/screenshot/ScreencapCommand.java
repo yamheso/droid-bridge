@@ -1,4 +1,6 @@
-package commands;
+package commands.screenshot;
+
+import commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;

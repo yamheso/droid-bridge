@@ -1,9 +1,14 @@
 package adb;
 
-import commands.DevicesCommand;
-import commands.PullCommand;
-import commands.ScreencapCommand;
+import commands.adb_debugging.DevicesCommand;
+import commands.system.get_prop.DeviceProperties;
+import commands.system.get_prop.GetpropCommand;
+import commands.file_manager.PullCommand;
+import commands.screenshot.ScreencapCommand;
 import utils.ConsoleCommandExecutor;
+import utils.RegexHelper;
+
+import java.util.List;
 
 public class ADBUtils {
 
@@ -37,6 +42,27 @@ public class ADBUtils {
                         .setLongOutput(isLongOutput)
                         .build())
                 .build());
+    }
+
+    public String getDeviceProperty(DeviceProperties property) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new GetpropCommand.Builder()
+                        .setProperty(property.getPropertyName())
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public List<String> getDevicePropertyNamesList(String regex) {
+        String allCommand = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new GetpropCommand.Builder()
+                        .setProperty(new DeviceProperties().setAllProperties().getPropertyName())
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+        return RegexHelper.getRegexMatch(allCommand, regex);
     }
 
     public String pullFile(String pathFrom, String pathTo) {
