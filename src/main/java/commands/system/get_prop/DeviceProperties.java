@@ -39,9 +39,18 @@ public class DeviceProperties {
     }
 
     public DeviceProperties(ADBUtils adb, String property) {
+        initProperty(adb, property, this.regex);
+    }
+
+    public DeviceProperties(ADBUtils adb, String property, String regex) {
+        initProperty(adb, property, regex);
+    }
+
+    private void initProperty(ADBUtils adb, String property, String regex) {
         List<String> allCommandList = adb.getDevicePropertyNamesList(regex);
         int propertyIndex = allCommandList.indexOf(property);
-        if (propertyIndex == -1) throw new Error(String.format("The [%s] property was not found in the list", property));
+        if (propertyIndex == -1)
+            throw new Error(String.format("The [%s] property was not found in the list", property));
         this.property = allCommandList.get(propertyIndex);
     }
 
@@ -179,11 +188,8 @@ public class DeviceProperties {
         return this;
     }
 
-    public String getRegex() {
-        return regex;
-    }
-
-    public void setRegex(String regex) {
+    public DeviceProperties setRegex(String regex) {
         this.regex = regex;
+        return this;
     }
 }
