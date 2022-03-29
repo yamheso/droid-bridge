@@ -4,6 +4,7 @@ import commands.system.get_prop.DeviceProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,6 +54,14 @@ public class ADBExecutionTests {
     public void uninstallPackageCommandTest() {
         String commandAnswer = adb.uninstallPackage(packageForUninstall, false);
         assertEquals("Success", commandAnswer);
+    }
+
+    @Test
+    public void checkPackagePathCommandTest() {
+        List<String> allPackages = adb.getPackagesList(PackagesListKey.ALL);
+        int allPackagesSize = allPackages.size();
+        String randomPackage = allPackages.get(new Random().nextInt(allPackagesSize - 1));
+        assertTrue(adb.getPackagePath(randomPackage).contains(".apk"));
     }
 
     private void checkPulledScreenshot(String screenPath) {

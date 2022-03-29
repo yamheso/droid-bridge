@@ -2,6 +2,7 @@ package adb;
 
 import commands.adb_debugging.DevicesCommand;
 import commands.file_manager.PullCommand;
+import commands.package_manager.PathCommand;
 import commands.package_manager.UninstallCommand;
 import commands.package_manager.list_manager.ListPackagesCommand;
 import commands.package_manager.list_manager.PackagesListKey;
@@ -120,6 +121,16 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new ListPackagesCommand.Builder()
                         .setKeyword(keyword)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getPackagePath(String packageName) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new PathCommand.Builder()
+                        .setPackageName(packageName)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
