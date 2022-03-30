@@ -1,4 +1,5 @@
 import adb.ADBUtils;
+import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.list_manager.PackagesListKey;
 import commands.system.get_prop.DeviceProperties;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,12 @@ public class ADBExecutionTests {
         int allPackagesSize = allPackages.size();
         String randomPackage = allPackages.get(new Random().nextInt(allPackagesSize - 1));
         assertTrue(adb.getPackagePath(randomPackage).contains(".apk"));
+    }
+
+    @Test
+    public void installPackageCommandTest() {
+        String commandAnswer = adb.installPackage(InstallKey.ALLOW_VERSION_DOWNGRADE, desktopPath + "/app.apk");
+        assertTrue(commandAnswer.contains("Success"));
     }
 
     private void checkPulledScreenshot(String screenPath) {

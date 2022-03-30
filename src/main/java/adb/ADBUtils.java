@@ -4,6 +4,8 @@ import commands.adb_debugging.DevicesCommand;
 import commands.file_manager.PullCommand;
 import commands.package_manager.PathCommand;
 import commands.package_manager.UninstallCommand;
+import commands.package_manager.install_manager.InstallCommand;
+import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.list_manager.ListPackagesCommand;
 import commands.package_manager.list_manager.PackagesListKey;
 import commands.screenshot.ScreencapCommand;
@@ -131,6 +133,39 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new PathCommand.Builder()
                         .setPackageName(packageName)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String installSpecifyingPackageName(String packageName, String... paths) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new InstallCommand.Builder()
+                        .setPaths(paths)
+                        .setKey(InstallKey.SPECIFY_PACKAGE_NAME)
+                        .setPackageName(packageName)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String installPackage(InstallKey key, String... paths) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new InstallCommand.Builder()
+                        .setPaths(paths)
+                        .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String installPackage(String... paths) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new InstallCommand.Builder()
+                        .setPaths(paths)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
