@@ -22,7 +22,6 @@ public enum PackagesListKey {
     }
 
     PackagesListKey() {
-
     }
 
     public String getKey() {

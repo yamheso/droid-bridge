@@ -8,11 +8,14 @@ import commands.package_manager.install_manager.InstallCommand;
 import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.list_manager.ListPackagesCommand;
 import commands.package_manager.list_manager.PackagesListKey;
+import commands.package_manager.permission_manager.GroupPermissionsKey;
 import commands.package_manager.permission_manager.ListPermissionGroupsCommand;
+import commands.package_manager.permission_manager.ListPermissionsCommand;
 import commands.screenshot.ScreencapCommand;
 import commands.system.get_prop.DeviceProperties;
 import commands.system.get_prop.GetpropCommand;
 import utils.ConsoleCommandExecutor;
+import utils.Regex;
 import utils.RegexHelper;
 
 import java.util.List;
@@ -99,7 +102,7 @@ public class ADBUtils {
     }
 
     public List<String> getPackagesList(String keyword) {
-        return RegexHelper.getRegexMatch(getPackages(keyword), ":(.+?)package|:(.+)");
+        return RegexHelper.getRegexMatch(getPackages(keyword), Regex.LIST_PACKAGE);
     }
 
     public List<String> getPackagesList(PackagesListKey key, String regex) {
@@ -107,7 +110,7 @@ public class ADBUtils {
     }
 
     public List<String> getPackagesList(PackagesListKey key) {
-        return RegexHelper.getRegexMatch(getPackages(key), ":(.+?)package|:(.+)");
+        return RegexHelper.getRegexMatch(getPackages(key), Regex.LIST_PACKAGE);
     }
 
     public String getPackages(PackagesListKey key) {
@@ -173,9 +176,41 @@ public class ADBUtils {
                 .build());
     }
 
-    public String getPermissionsGroup() {
-        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+    public List<String> getPermissionGroups() {
+        String allGroups = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new ListPermissionGroupsCommand.Builder()
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+        return RegexHelper.getRegexMatch(allGroups, Regex.PERMISSION_GROUP);
+    }
+
+    public List<String> getPermissionGroups(String regex) {
+        String allGroups = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionGroupsCommand.Builder()
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+        return RegexHelper.getRegexMatch(allGroups, regex);
+    }
+
+    public String getPermissionsGroup(GroupPermissionsKey key, String group) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionsCommand.Builder()
+                        .setKey(key)
+                        .setGroup(group)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getPermissionsInAllGroups(GroupPermissionsKey key) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionsCommand.Builder()
+                        .setKey(key)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)

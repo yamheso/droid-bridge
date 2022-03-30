@@ -1,6 +1,7 @@
 package commands.system.get_prop;
 
 import adb.ADBUtils;
+import utils.Regex;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class DeviceProperties {
     private final String WI_FI_CHANNELS = "ro.wifi.channels";
     private final String BASE_BAND_IMEI = "gsm.baseband.imei";
     private final String BT_NAME = "net.bt.name";
-    private String regex = "\\]\\[(.+?)\\]\\:";
+    private String regex = Regex.DEVICE_PROPERTIES;
 
     public DeviceProperties() {
     }
