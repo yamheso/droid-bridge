@@ -8,6 +8,7 @@ import commands.package_manager.install_manager.InstallCommand;
 import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.list_manager.ListPackagesCommand;
 import commands.package_manager.list_manager.PackagesListKey;
+import commands.package_manager.permission_manager.ListPermissionGroupsCommand;
 import commands.screenshot.ScreencapCommand;
 import commands.system.get_prop.DeviceProperties;
 import commands.system.get_prop.GetpropCommand;
@@ -166,6 +167,15 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new InstallCommand.Builder()
                         .setPaths(paths)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getPermissionsGroup() {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionGroupsCommand.Builder()
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)

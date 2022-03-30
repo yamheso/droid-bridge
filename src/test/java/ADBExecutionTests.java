@@ -71,6 +71,12 @@ public class ADBExecutionTests {
         assertTrue(commandAnswer.contains("Success"));
     }
 
+    @Test
+    public void permissionsCommandTest() {
+        String commandAnswer = adb.getPermissionsGroup();
+        assertTrue(commandAnswer.contains("Success"));
+    }
+
     private void checkPulledScreenshot(String screenPath) {
         adb.takeScreenshot(screenPath);
         assertTrue(adb.pullFile(screenPath, desktopPath).contains(screenPath + ": 1 file pulled"));
