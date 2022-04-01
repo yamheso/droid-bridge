@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PathCommand implements Command {
 
-    private String packageName;
+    private final String packageName;
 
     private PathCommand(String packageName) {
         this.packageName = packageName;

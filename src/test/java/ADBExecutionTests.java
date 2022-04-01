@@ -1,6 +1,6 @@
 import adb.ADBUtils;
 import commands.package_manager.install_manager.InstallKey;
-import commands.package_manager.list_manager.PackagesListKey;
+import commands.package_manager.packages_manager.PackagesListKey;
 import commands.package_manager.permission_manager.GroupPermissionsKey;
 import commands.system.get_prop.DeviceProperties;
 import org.junit.jupiter.api.Test;
@@ -67,19 +67,41 @@ public class ADBExecutionTests {
     }
 
     @Test
-    public void installPackageCommandTest() {
+    public void checkInstallPackageCommandTest() {
         String commandAnswer = adb.installPackage(InstallKey.ALLOW_VERSION_DOWNGRADE, desktopPath + "/app.apk");
         assertTrue(commandAnswer.contains("Success"));
     }
 
     @Test
-    public void permissionsCommandTest() {
+    public void checkPermissionsCommandTest() {
         List<String> permissionGroupsList = adb.getPermissionGroups();
         int indexLocationGroup = permissionGroupsList.indexOf("android.permission-group.LOCATION");
         String infoPermissionLocationGroup = adb.getPermissionsGroup(GroupPermissionsKey.INFO, permissionGroupsList.get(indexLocationGroup));
         assertTrue(infoPermissionLocationGroup.contains("Access your car's speed"));
         String allLocationPermissions = adb.getPermissionsGroup(GroupPermissionsKey.ALL, permissionGroupsList.get(indexLocationGroup));
         assertTrue(allLocationPermissions.contains("com.google.android.gms.permission.CAR_SPEED"));
+    }
+
+    @Test
+    public void checkListInstrumentationCommandTest() {
+        String expectedPackage = "io.appium.uiautomator2.server";
+        String firstAnswer = adb.getTestPackages(true);
+        assertTrue(firstAnswer.contains(".apk=" + expectedPackage + ".test"));
+        String secondAnswer = adb.getTestPackages(expectedPackage, false);
+        assertTrue(!secondAnswer.contains(".apk=") && secondAnswer.contains(expectedPackage + ".test"));
+    }
+
+    @Test
+    public void checkDifferentListCommandsTest() {
+        String expectedFeature = "android.software.managed_users";
+        String answer = adb.getFeatures();
+        assertTrue(answer.contains(expectedFeature));
+        String expectedLibrary = "com.qualcomm.uimremoteserverlibrary";
+        answer = adb.getLibraries();
+        assertTrue(answer.contains(expectedLibrary));
+        String expectedUser = "Owner:c13";
+        answer = adb.getUsers();
+        assertTrue(answer.contains(expectedUser));
     }
 
     private void checkPulledScreenshot(String screenPath) {

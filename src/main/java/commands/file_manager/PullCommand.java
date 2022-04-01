@@ -7,8 +7,8 @@ import java.util.List;
 
 public class PullCommand implements Command {
 
-    private String pathFrom;
-    private String pathTo;
+    private final String pathFrom;
+    private final String pathTo;
 
     private PullCommand(String pathFrom, String pathTo) {
         this.pathFrom = pathFrom;

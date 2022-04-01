@@ -7,7 +7,7 @@ import java.util.List;
 
 public class DevicesCommand implements Command {
 
-    private boolean shouldLongOutput;
+    private final boolean shouldLongOutput;
 
     private DevicesCommand(boolean shouldLongOutput) {
         this.shouldLongOutput = shouldLongOutput;

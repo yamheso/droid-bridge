@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ScreencapCommand implements Command {
 
-    private String path;
+    private final String path;
 
     private ScreencapCommand(String path) {
         this.path = path;

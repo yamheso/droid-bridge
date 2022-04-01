@@ -1,4 +1,4 @@
-package commands.package_manager.list_manager;
+package commands.package_manager.packages_manager;
 
 public enum PackagesListKey {
 
