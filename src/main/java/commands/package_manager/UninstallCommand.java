@@ -7,8 +7,8 @@ import java.util.List;
 
 public class UninstallCommand implements Command {
 
-    private String packageName;
-    private boolean shouldKeepData;
+    private final String packageName;
+    private final boolean shouldKeepData;
 
     private UninstallCommand(String packageName, boolean shouldKeepData) {
         this.packageName = packageName;

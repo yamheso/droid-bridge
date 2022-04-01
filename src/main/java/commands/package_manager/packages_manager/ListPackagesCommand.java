@@ -1,4 +1,4 @@
-package commands.package_manager.list_manager;
+package commands.package_manager.packages_manager;
 
 import commands.Command;
 
@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class ListPackagesCommand implements Command {
 
-    private PackagesListKey key;
-    private String keyword;
+    private final PackagesListKey key;
+    private final String keyword;
 
     private ListPackagesCommand(PackagesListKey key, String keyword) {
         this.key = key;

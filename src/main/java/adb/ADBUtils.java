@@ -1,13 +1,13 @@
 package adb;
 
+import commands.package_manager.ListLibrariesCommand;
 import commands.adb_debugging.DevicesCommand;
 import commands.file_manager.PullCommand;
-import commands.package_manager.PathCommand;
-import commands.package_manager.UninstallCommand;
+import commands.package_manager.*;
 import commands.package_manager.install_manager.InstallCommand;
 import commands.package_manager.install_manager.InstallKey;
-import commands.package_manager.list_manager.ListPackagesCommand;
-import commands.package_manager.list_manager.PackagesListKey;
+import commands.package_manager.packages_manager.ListPackagesCommand;
+import commands.package_manager.packages_manager.PackagesListKey;
 import commands.package_manager.permission_manager.GroupPermissionsKey;
 import commands.package_manager.permission_manager.ListPermissionGroupsCommand;
 import commands.package_manager.permission_manager.ListPermissionsCommand;
@@ -178,8 +178,7 @@ public class ADBUtils {
 
     public List<String> getPermissionGroups() {
         String allGroups = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
-                .setCommand(new ListPermissionGroupsCommand.Builder()
-                        .build())
+                .setCommand(new ListPermissionGroupsCommand.Builder().build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
                 .build());
@@ -188,8 +187,7 @@ public class ADBUtils {
 
     public List<String> getPermissionGroups(String regex) {
         String allGroups = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
-                .setCommand(new ListPermissionGroupsCommand.Builder()
-                        .build())
+                .setCommand(new ListPermissionGroupsCommand.Builder().build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
                 .build());
@@ -212,6 +210,51 @@ public class ADBUtils {
                 .setCommand(new ListPermissionsCommand.Builder()
                         .setKey(key)
                         .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getTestPackages(boolean shouldShowApk) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListInstrumentationCommand.Builder()
+                        .setShouldShowApk(shouldShowApk)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getTestPackages(String packageName, boolean shouldShowApk) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListInstrumentationCommand.Builder()
+                        .setPackageName(packageName)
+                        .setShouldShowApk(shouldShowApk)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getFeatures() {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListFeaturesCommand.Builder().build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getLibraries() {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListLibrariesCommand.Builder().build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getUsers() {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListUsersCommand.Builder().build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
                 .build());

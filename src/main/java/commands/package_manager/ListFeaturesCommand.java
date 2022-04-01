@@ -1,19 +1,19 @@
-package commands.package_manager.permission_manager;
+package commands.package_manager;
 
 import commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListPermissionGroupsCommand implements Command {
+public class ListFeaturesCommand implements Command {
 
-    private ListPermissionGroupsCommand() {
+    private ListFeaturesCommand() {
     }
 
     @Override
     public List<String> getCommandComponents() {
         List<String> commandComponents = new ArrayList<>();
-        commandComponents.add("pm list permission-groups");
+        commandComponents.add("pm list features");
         return commandComponents;
     }
 
@@ -24,8 +24,8 @@ public class ListPermissionGroupsCommand implements Command {
 
     public static final class Builder {
 
-        public ListPermissionGroupsCommand build() {
-            return new ListPermissionGroupsCommand();
+        public ListFeaturesCommand build() {
+            return new ListFeaturesCommand();
         }
     }
 }

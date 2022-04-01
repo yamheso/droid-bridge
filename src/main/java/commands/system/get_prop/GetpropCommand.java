@@ -7,7 +7,7 @@ import java.util.List;
 
 public class GetpropCommand implements Command {
 
-    private String property;
+    private final String property;
 
     private GetpropCommand(String property) {
         this.property = property;

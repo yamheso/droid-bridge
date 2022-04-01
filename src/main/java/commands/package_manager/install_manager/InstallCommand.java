@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class InstallCommand implements Command {
 
-    private InstallKey key;
-    private String[] paths;
-    private String packageName;
+    private final InstallKey key;
+    private final String[] paths;
+    private final String packageName;
 
     private InstallCommand(InstallKey key, String[] paths, String packageName) {
         this.key = key;
