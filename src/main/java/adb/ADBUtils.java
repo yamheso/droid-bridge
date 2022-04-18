@@ -46,12 +46,32 @@ public class ADBUtils {
                 .build());
     }
 
-    public String getDevicesId(boolean isLongOutput) {
+    public String getDeviceIds(boolean isLongOutput) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new DevicesCommand.Builder()
                         .setShouldBeLongOutput(isLongOutput)
                         .build())
                 .build());
+    }
+
+    public List<String> getDeviceIds() {
+        String allDevices = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DevicesCommand.Builder()
+                        .setShouldBeLongOutput(false)
+                        .build())
+                .build());
+        return RegexHelper.getRegexMatch(allDevices, Regex.DEVICES);
+
+    }
+
+    public List<String> getDeviceIds(String regex) {
+        String allDevices = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DevicesCommand.Builder()
+                        .setShouldBeLongOutput(false)
+                        .build())
+                .build());
+        return RegexHelper.getRegexMatch(allDevices, regex);
+
     }
 
     public String getDeviceProperty(DeviceProperties property) {
@@ -65,14 +85,14 @@ public class ADBUtils {
     }
 
     public List<String> getDevicePropertyNamesList(String regex) {
-        String allCommand = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+        String allCommands = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new GetpropCommand.Builder()
                         .setProperty(new DeviceProperties().setAllProperties().getPropertyName())
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
                 .build());
-        return RegexHelper.getRegexMatch(allCommand, regex);
+        return RegexHelper.getRegexMatch(allCommands, regex);
     }
 
     public String pullFile(String pathFrom, String pathTo) {

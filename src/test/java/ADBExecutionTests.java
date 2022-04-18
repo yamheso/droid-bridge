@@ -18,6 +18,11 @@ public class ADBExecutionTests {
     private ADBUtils adb = new ADBUtils(deviceId);
 
     @Test
+    public void checkConnectedDevicesTest() {
+        assertTrue(adb.getDeviceIds().contains(deviceId));
+    }
+
+    @Test
     public void checkScreencapAndPullCommandsTest() {
         String screenPath = "/storage/emulated/0/Pictures/Screenshots/test_screen.png";
         checkPulledScreenshot(screenPath);
