@@ -14,8 +14,14 @@ public class ADBExecutionTests {
 
     private String deviceId = "0B301JECB04590";
     private String desktopPath = System.getProperty("user.home") + "/Desktop";
-    private String packageForUninstall = "ru.rian.inosmi";
+    private String packageForUninstall = "com.shazam.android";
     private ADBUtils adb = new ADBUtils(deviceId);
+
+    @Test
+    public void checkKillAndStartServerCommandsTest() {
+        adb.killServer();
+        adb.startServer();
+    }
 
     @Test
     public void checkConnectedDevicesTest() {
