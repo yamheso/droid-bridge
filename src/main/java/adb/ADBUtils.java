@@ -1,7 +1,8 @@
 package adb;
 
-import commands.package_manager.ListLibrariesCommand;
 import commands.adb_debugging.DevicesCommand;
+import commands.adb_debugging.KillServerCommand;
+import commands.adb_debugging.StartServerCommand;
 import commands.file_manager.PullCommand;
 import commands.package_manager.*;
 import commands.package_manager.install_manager.InstallCommand;
@@ -34,6 +35,18 @@ public class ADBUtils {
 
     public ADBUtils(Integer transportID) {
         this.transportID = transportID;
+    }
+
+    public void killServer() {
+        ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new KillServerCommand.Builder().build())
+                .build());
+    }
+
+    public void startServer() {
+        ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new StartServerCommand.Builder().build())
+                .build());
     }
 
     public void takeScreenshot(String path) {
