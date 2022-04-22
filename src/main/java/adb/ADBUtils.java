@@ -3,7 +3,11 @@ package adb;
 import commands.adb_debugging.DevicesCommand;
 import commands.adb_debugging.KillServerCommand;
 import commands.adb_debugging.StartServerCommand;
+import commands.file_manager.CdCommand;
 import commands.file_manager.PullCommand;
+import commands.file_manager.PushCommand;
+import commands.file_manager.ls.LsCommand;
+import commands.file_manager.ls.LsKey;
 import commands.package_manager.*;
 import commands.package_manager.install_manager.InstallCommand;
 import commands.package_manager.install_manager.InstallKey;
@@ -111,6 +115,17 @@ public class ADBUtils {
     public String pullFile(String pathFrom, String pathTo) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new PullCommand.Builder()
+                        .setFromPath(pathFrom)
+                        .setToPath(pathTo)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String pushFile(String pathFrom, String pathTo) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new PushCommand.Builder()
                         .setFromPath(pathFrom)
                         .setToPath(pathTo)
                         .build())
@@ -242,6 +257,37 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new ListPermissionsCommand.Builder()
                         .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getFilesOrDirectories(LsKey key, String path) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new LsCommand.Builder()
+                        .setKey(key)
+                        .setPath(path)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getAllFilesOrDirectories(LsKey key) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new LsCommand.Builder()
+                        .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public void changeDirectory(String path) {
+        ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new CdCommand.Builder()
+                        .setPath(path)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
