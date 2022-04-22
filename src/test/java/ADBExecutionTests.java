@@ -1,4 +1,5 @@
 import adb.ADBUtils;
+import commands.file_manager.ls.LsKey;
 import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.packages_manager.PackagesListKey;
 import commands.package_manager.permission_manager.GroupPermissionsKey;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ADBExecutionTests {
 
     private String deviceId = "0B301JECB04590";
-    private String desktopPath = System.getProperty("user.home") + "/Desktop";
+    private String desktopPath = System.getProperty("user.home") + "/Desktop/";
     private String packageForUninstall = "com.shazam.android";
     private ADBUtils adb = new ADBUtils(deviceId);
 
@@ -38,6 +39,16 @@ public class ADBExecutionTests {
         screenPath = String.format("/storage/emulated/0/Pictures/Screenshots/test_screen%d.png", 2);
         adb = new ADBUtils();
         checkPulledScreenshot(screenPath);
+    }
+
+    @Test
+    public void checkPushAndLsCommandsTest() {
+        String file = "some_doc.docx";
+        String fromPath = desktopPath + file;
+        String path = "/storage/emulated/0/Documents/";
+        String toPath = path + file;
+        assertTrue(adb.pushFile(fromPath, toPath).contains(fromPath + ": 1 file pushed"));
+        assertTrue(adb.getFilesOrDirectories(LsKey.ALL, path).contains(file));
     }
 
     @Test
@@ -79,7 +90,7 @@ public class ADBExecutionTests {
 
     @Test
     public void checkInstallPackageCommandTest() {
-        String commandAnswer = adb.installPackage(InstallKey.ALLOW_VERSION_DOWNGRADE, desktopPath + "/app.apk");
+        String commandAnswer = adb.installPackage(InstallKey.ALLOW_VERSION_DOWNGRADE, desktopPath + "app.apk");
         assertTrue(commandAnswer.contains("Success"));
     }
 
