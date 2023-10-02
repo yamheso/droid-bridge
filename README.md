@@ -3,7 +3,7 @@ Droid-Bridge is a library (software API) for interacting with the ADB (Android D
 
 ## How to use it? 
 Suppose we have the following devices connected
-`
+```
 ~ user$ adb devices
 
 List of devices attached
@@ -19,7 +19,7 @@ List of devices attached
 28251JEGR15058 device
 
 29231JEGR06052 device
-`
+```
 ```
 // Create a list of device serial numbers with the 'device' status
 List<String> devices = ADBUtils.getOkStatusDeviceIds();
