@@ -7,26 +7,34 @@ import commands.system.get_prop.DeviceProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ADBExecutionTests {
 
-    private String deviceId = "0B301JECB04590";
+    private String deviceId = ADBUtils.getOkStatusDeviceIds().get(0);
     private String desktopPath = System.getProperty("user.home") + "/Desktop/";
     private String packageForUninstall = "com.shazam.android";
     private ADBUtils adb = new ADBUtils(deviceId);
 
-    @Test
-    public void checkKillAndStartServerCommandsTest() {
-        adb.killServer();
-        adb.startServer();
+
+    private Map<String, ADBUtils> initAdbForDevices() {
+        return ADBUtils.getOkStatusDeviceIds().stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        ADBUtils::new
+                ));
     }
 
     @Test
-    public void checkConnectedDevicesTest() {
-        assertTrue(adb.getDeviceIds().contains(deviceId));
+    public void checkKillAndStartServerCommandsTest() {
+        System.out.println(ADBUtils.getOkStatusDeviceIds());
+        adb = initAdbForDevices().get("0B301JECB04590");
+        adb.killServer();
+        adb.startServer();
     }
 
     @Test

@@ -13,11 +13,10 @@
         <maven.surefire.version>3.0.0-M5</maven.surefire.version>
         <aspectj.version>1.9.0</aspectj.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <compiler.version>1.8</compiler.version>
-        <junit.jupiter.engine.version>5.8.2</junit.jupiter.engine.version>
-        <junit.jupiter.api.version>5.8.2</junit.jupiter.api.version>
-        <junit.platform.commons.version>1.8.2</junit.platform.commons.version>
-        <junit.platform.launcher.version>1.8.2</junit.platform.launcher.version>
+        <compiler.version>11</compiler.version>
+        <log4j2.slf4j.version>2.0.9</log4j2.slf4j.version>
+        <junit.jupiter.api.version>5.9.1</junit.jupiter.api.version>
+        <guava.version>31.0.1-jre</guava.version>
     </properties>
 
     <build>
@@ -60,26 +59,19 @@
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.engine.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.jupiter.api.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-commons</artifactId>
-            <version>${junit.platform.commons.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${log4j2.slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <version>${junit.platform.launcher.version}</version>
-            <scope>test</scope>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 </project>
