@@ -24,11 +24,18 @@ import utils.Regex;
 import utils.RegexHelper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ADBUtils {
 
     private Integer transportID;
     private String serial;
+    private static Map<String, String> allConnectedDevices;
+
+    static {
+        getAttachedDevicesListInfo();
+    }
 
     public ADBUtils() {
     }
@@ -39,6 +46,59 @@ public class ADBUtils {
 
     public ADBUtils(Integer transportID) {
         this.transportID = transportID;
+    }
+
+    public static void setAllConnectedDevices(Map<String, String> serialNumbers) {
+        allConnectedDevices = serialNumbers;
+    }
+
+    public static Map<String, String> getAllConnectedDevices() {
+        return allConnectedDevices;
+    }
+
+    public static List<String> getOkStatusDeviceIds() {
+        return getAllConnectedDevices()
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().equals(DeviceStatus.OK_STATUS.getDeviceStatus()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    public static List<String> getDeviceIdsByStatus(DeviceStatus status) {
+        return getAllConnectedDevices()
+                .entrySet().stream()
+                .filter(entry -> entry.getValue().equals(status.getDeviceStatus()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * device: The device is connected and ready for use.
+     * offline: The device is connected but not available or is in offline mode.
+     * unauthorized: The device is connected but not authorized for use with adb.
+     * bootloader: The device is in bootloader or fastboot mode.
+     * recovery: The device is in recovery mode.
+     * no permissions: There are no permissions to access the device.
+     * unknown: The state of the device is unknown or undefined.
+     */
+    public enum DeviceStatus {
+        OK_STATUS("device"),
+        OFFLINE_STATUS("offline"),
+        UNAUTHORIZED_STATUS("unauthorized"),
+        BOOTLOADER_STATUS("bootloader"),
+        RECOVERY_STATUS("recovery"),
+        NO_PERMISSIONS_STATUS("no permissions"),
+        UNKNOWN_STATUS("unknown");
+
+        private String status;
+
+        DeviceStatus(String status) {
+            this.status = status;
+        }
+
+        public String getDeviceStatus() {
+            return status;
+        }
     }
 
     public void killServer() {
@@ -63,7 +123,7 @@ public class ADBUtils {
                 .build());
     }
 
-    public String getDeviceIds(boolean isLongOutput) {
+    public String getAttachedDevicesListInfo(boolean isLongOutput) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new DevicesCommand.Builder()
                         .setShouldBeLongOutput(isLongOutput)
@@ -71,14 +131,12 @@ public class ADBUtils {
                 .build());
     }
 
-    public List<String> getDeviceIds() {
-        String allDevices = ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+    public static String getAttachedDevicesListInfo() {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new DevicesCommand.Builder()
                         .setShouldBeLongOutput(false)
                         .build())
                 .build());
-        return RegexHelper.getRegexMatch(allDevices, Regex.DEVICES);
-
     }
 
     public List<String> getDeviceIds(String regex) {
