@@ -5,12 +5,19 @@ Droid-Bridge is a library (software API) for interacting with the ADB (Android D
 Suppose we have the following devices connected
 `
 ~ user$ adb devices
+
 List of devices attached
+
 0C091JECB06816 offline
+
 0C141JECB02566 device
+
 16171JECB04684 device
+
 28231JEGR35194 unauthorized
+
 28251JEGR15058 device
+
 29231JEGR06052 device
 `
 ```
