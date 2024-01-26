@@ -8,6 +8,8 @@ import commands.file_manager.PullCommand;
 import commands.file_manager.PushCommand;
 import commands.file_manager.ls.LsCommand;
 import commands.file_manager.ls.LsKey;
+import commands.logcat.dumpsys.DumpsysCommand;
+import commands.logcat.dumpsys.DumpsysKey;
 import commands.package_manager.*;
 import commands.package_manager.install_manager.InstallCommand;
 import commands.package_manager.install_manager.InstallKey;
@@ -392,6 +394,37 @@ public class ADBUtils {
     public String getUsers() {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new ListUsersCommand.Builder().build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getDumpsysInfo(String service) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DumpsysCommand.Builder()
+                        .setService(service)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getDumpsysInfo(Map<DumpsysKey, String> keyValue) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DumpsysCommand.Builder()
+                        .setKeyValue(keyValue)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getDumpsysInfo(Map<DumpsysKey, String> keyValue, String service) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DumpsysCommand.Builder()
+                        .setKeyValue(keyValue)
+                        .setService(service)
+                        .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
                 .build());

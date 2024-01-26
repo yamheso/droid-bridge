@@ -1,11 +1,13 @@
 import adb.ADBUtils;
 import commands.file_manager.ls.LsKey;
+import commands.logcat.dumpsys.DumpsysKey;
 import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.packages_manager.PackagesListKey;
 import commands.package_manager.permission_manager.GroupPermissionsKey;
 import commands.system.get_prop.DeviceProperties;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -132,6 +134,14 @@ public class ADBExecutionTests {
         String expectedUser = "Owner:c13";
         answer = adb.getUsers();
         assertTrue(answer.contains(expectedUser));
+    }
+
+    @Test
+    public void checkDumpsysCommandTest() {
+        String pid = "56565";
+        String errorMessage = "Can't find service: ".concat(pid);
+        String answer = adb.getDumpsysInfo(Collections.singletonMap(DumpsysKey.PID, pid));
+        assertEquals(errorMessage, answer);
     }
 
     private void checkPulledScreenshot(String screenPath) {

@@ -5,7 +5,7 @@ public enum DumpsysKey {
     SKIP_SERVICES("--skip"),
     TIMEOUT_SEC("-t"),
     TIMEOUT_MS("-T"),
-    PID("--pid:");
+    PID("--pid");
 
 
     private String key;
