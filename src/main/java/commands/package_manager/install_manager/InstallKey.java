@@ -1,6 +1,8 @@
 package commands.package_manager.install_manager;
 
-public enum InstallKey {
+import commands.Keychain;
+
+public enum InstallKey implements Keychain {
 
     WITH_FORWARD_LOCK("-l"),
     REINSTALL_WITH_KEEPING_DATA("-r"),
@@ -20,6 +22,7 @@ public enum InstallKey {
         this.key = key;
     }
 
+    @Override
     public String getKey() {
         return key;
     }

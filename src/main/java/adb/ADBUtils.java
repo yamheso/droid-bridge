@@ -8,6 +8,8 @@ import commands.file_manager.PullCommand;
 import commands.file_manager.PushCommand;
 import commands.file_manager.ls.LsCommand;
 import commands.file_manager.ls.LsKey;
+import commands.file_manager.rm.RmCommand;
+import commands.file_manager.rm.RmKey;
 import commands.logcat.dumpsys.DumpsysCommand;
 import commands.logcat.dumpsys.DumpsysKey;
 import commands.package_manager.*;
@@ -338,6 +340,28 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new LsCommand.Builder()
                         .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String removeFilesOrDirectories(RmKey key, String path) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new RmCommand.Builder()
+                        .setKey(key)
+                        .setPath(path)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String removeFilesOrDirectories(String key, String path) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new RmCommand.Builder()
+                        .setKey(RmKey.NEW_KEY.setKey(key))
+                        .setPath(path)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)

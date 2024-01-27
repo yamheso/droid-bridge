@@ -1,5 +1,6 @@
 import adb.ADBUtils;
 import commands.file_manager.ls.LsKey;
+import commands.file_manager.rm.RmKey;
 import commands.logcat.dumpsys.DumpsysKey;
 import commands.package_manager.install_manager.InstallKey;
 import commands.package_manager.packages_manager.PackagesListKey;
@@ -21,7 +22,7 @@ public class ADBExecutionTests {
     private String desktopPath = System.getProperty("user.home") + "/Desktop/";
     private String packageForUninstall = "com.shazam.android";
     private ADBUtils adb = new ADBUtils(deviceId);
-
+    private String fileDocx = "some_doc.docx";
 
     private Map<String, ADBUtils> initAdbForDevices() {
         return ADBUtils.getOkStatusDeviceIds().stream()
@@ -52,13 +53,13 @@ public class ADBExecutionTests {
     }
 
     @Test
-    public void checkPushAndLsCommandsTest() {
-        String file = "some_doc.docx";
-        String fromPath = desktopPath + file;
+    public String checkPushAndLsCommandsTest() {
+        String fromPath = desktopPath + fileDocx;
         String path = "/storage/emulated/0/Documents/";
-        String toPath = path + file;
+        String toPath = path + fileDocx;
         assertTrue(adb.pushFile(fromPath, toPath).contains(fromPath + ": 1 file pushed"));
-        assertTrue(adb.getFilesOrDirectories(LsKey.ALL, path).contains(file));
+        assertTrue(adb.getFilesOrDirectories(LsKey.ALL, path).contains(fileDocx));
+        return toPath;
     }
 
     @Test
@@ -142,6 +143,17 @@ public class ADBExecutionTests {
         String errorMessage = "Can't find service: ".concat(pid);
         String answer = adb.getDumpsysInfo(Collections.singletonMap(DumpsysKey.PID, pid));
         assertEquals(errorMessage, answer);
+    }
+
+    @Test
+    public void checkRmCommandTest() {
+        String path = checkPushAndLsCommandsTest();
+        String key = "-f";
+        adb.removeFilesOrDirectories(key, path);
+        assertFalse(adb.getFilesOrDirectories(LsKey.ALL, path).contains(fileDocx));
+        path = checkPushAndLsCommandsTest();
+        adb.removeFilesOrDirectories(RmKey.FORCE, path);
+        assertFalse(adb.getFilesOrDirectories(LsKey.ALL, path).contains(fileDocx));
     }
 
     private void checkPulledScreenshot(String screenPath) {

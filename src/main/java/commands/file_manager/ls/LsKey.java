@@ -1,6 +1,8 @@
 package commands.file_manager.ls;
 
-public enum LsKey {
+import commands.Keychain;
+
+public enum LsKey implements Keychain {
 
     ALL,
     INCLUDING_HIDDEN("-a"),
@@ -16,6 +18,7 @@ public enum LsKey {
     LsKey() {
     }
 
+    @Override
     public String getKey() {
         return key;
     }

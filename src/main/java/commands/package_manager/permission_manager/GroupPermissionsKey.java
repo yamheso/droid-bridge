@@ -1,6 +1,8 @@
 package commands.package_manager.permission_manager;
 
-public enum GroupPermissionsKey {
+import commands.Keychain;
+
+public enum GroupPermissionsKey implements Keychain {
 
     ALL,
     ORGANIZE_BY_GROUP("-g"),
@@ -18,6 +20,7 @@ public enum GroupPermissionsKey {
     GroupPermissionsKey() {
     }
 
+    @Override
     public String getKey() {
         return key;
     }
