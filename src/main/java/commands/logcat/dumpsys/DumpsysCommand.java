@@ -1,6 +1,7 @@
 package commands.logcat.dumpsys;
 
 import commands.Command;
+import commands.Keychain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,10 @@ import java.util.Objects;
 
 public class DumpsysCommand implements Command {
 
-    private final Map<DumpsysKey, String> keyValue;
+    private final Map<Keychain, String> keyValue;
     private final String service;
 
-    private DumpsysCommand(Map<DumpsysKey, String> keyValue, String service) {
+    private DumpsysCommand(Map<Keychain, String> keyValue, String service) {
         this.keyValue = keyValue;
         this.service = service;
     }
@@ -22,7 +23,8 @@ public class DumpsysCommand implements Command {
         List<String> commandComponents = new ArrayList<>();
         commandComponents.add("dumpsys");
         if (Objects.nonNull(keyValue)) {
-            final DumpsysKey key = keyValue.keySet().stream().findFirst().orElseThrow(() -> new Error("The command key was not set!"));
+            final Keychain key = keyValue.keySet().stream().findFirst().orElseThrow(() -> new Error("The command key was not set!"));
+            assert key instanceof DumpsysKey;
             commandComponents.add(key.getKey());
             commandComponents.add(keyValue.get(key));
         }
@@ -40,9 +42,9 @@ public class DumpsysCommand implements Command {
     public static final class Builder {
 
         private String service;
-        private Map<DumpsysKey, String> keyValue;
+        private Map<Keychain, String> keyValue;
 
-        public DumpsysCommand.Builder setKeyValue(Map<DumpsysKey, String> keyValue) {
+        public DumpsysCommand.Builder setKeyValue(Map<Keychain, String> keyValue) {
             this.keyValue = keyValue;
             return this;
         }

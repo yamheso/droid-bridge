@@ -1,5 +1,6 @@
 package adb;
 
+import commands.Keychain;
 import commands.adb_debugging.DevicesCommand;
 import commands.adb_debugging.KillServerCommand;
 import commands.adb_debugging.StartServerCommand;
@@ -8,6 +9,8 @@ import commands.file_manager.PullCommand;
 import commands.file_manager.PushCommand;
 import commands.file_manager.ls.LsCommand;
 import commands.file_manager.ls.LsKey;
+import commands.file_manager.rm.RmCommand;
+import commands.file_manager.rm.RmKey;
 import commands.logcat.dumpsys.DumpsysCommand;
 import commands.logcat.dumpsys.DumpsysKey;
 import commands.package_manager.*;
@@ -25,6 +28,7 @@ import utils.ConsoleCommandExecutor;
 import utils.Regex;
 import utils.RegexHelper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -313,10 +317,31 @@ public class ADBUtils {
                 .build());
     }
 
+    public String getPermissionsGroup(String key, String group) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionsCommand.Builder()
+                        .setKey(GroupPermissionsKey.NEW_KEY.setKey(key))
+                        .setGroup(group)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
     public String getPermissionsInAllGroups(GroupPermissionsKey key) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new ListPermissionsCommand.Builder()
                         .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getPermissionsInAllGroups(String key) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new ListPermissionsCommand.Builder()
+                        .setKey(GroupPermissionsKey.NEW_KEY.setKey(key))
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
@@ -338,6 +363,28 @@ public class ADBUtils {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new LsCommand.Builder()
                         .setKey(key)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String removeFilesOrDirectories(RmKey key, String path) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new RmCommand.Builder()
+                        .setKey(key)
+                        .setPath(path)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String removeFilesOrDirectories(String key, String path) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new RmCommand.Builder()
+                        .setKey(RmKey.NEW_KEY.setKey(key))
+                        .setPath(path)
                         .build())
                 .setDeviceSerial(serial)
                 .setTransportId(transportID)
@@ -409,7 +456,7 @@ public class ADBUtils {
                 .build());
     }
 
-    public String getDumpsysInfo(Map<DumpsysKey, String> keyValue) {
+    public String getDumpsysInfo(Map<Keychain, String> keyValue) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new DumpsysCommand.Builder()
                         .setKeyValue(keyValue)
@@ -419,10 +466,31 @@ public class ADBUtils {
                 .build());
     }
 
-    public String getDumpsysInfo(Map<DumpsysKey, String> keyValue, String service) {
+    public String getDumpsysInfo(String key, String value) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DumpsysCommand.Builder()
+                        .setKeyValue(Collections.singletonMap(DumpsysKey.NEW_KEY.setKey(key), value))
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getDumpsysInfo(Map<Keychain, String> keyValue, String service) {
         return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
                 .setCommand(new DumpsysCommand.Builder()
                         .setKeyValue(keyValue)
+                        .setService(service)
+                        .build())
+                .setDeviceSerial(serial)
+                .setTransportId(transportID)
+                .build());
+    }
+
+    public String getDumpsysInfo(String key, String value, String service) {
+        return ConsoleCommandExecutor.exec(new ADBCommand.Builder()
+                .setCommand(new DumpsysCommand.Builder()
+                        .setKeyValue(Collections.singletonMap(DumpsysKey.NEW_KEY.setKey(key), value))
                         .setService(service)
                         .build())
                 .setDeviceSerial(serial)

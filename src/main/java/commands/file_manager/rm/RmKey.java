@@ -1,23 +1,24 @@
-package commands.logcat.dumpsys;
+package commands.file_manager.rm;
 
 import commands.Keychain;
 
-public enum DumpsysKey implements Keychain {
+public enum RmKey implements Keychain {
 
+    NONE,
     NEW_KEY,
-    ALL_SYS_SERVICES("-l"),
-    SKIP_SERVICES("--skip"),
-    TIMEOUT_SEC("-t"),
-    TIMEOUT_MS("-T"),
-    PID("--pid");
+    FORCE("-f"),
+    RECURSIVELY("-r"),
+    DIRECTORY("-rM"),
+    VERBOSE("-v"),
+    INTERACTIVE("-i");
 
     private String key;
 
-    DumpsysKey(String key) {
+    RmKey(String key) {
         this.key = key;
     }
 
-    DumpsysKey() {
+    RmKey() {
     }
 
     public Keychain setKey(String key) {

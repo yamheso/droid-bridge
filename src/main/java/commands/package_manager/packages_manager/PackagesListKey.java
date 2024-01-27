@@ -1,6 +1,8 @@
 package commands.package_manager.packages_manager;
 
-public enum PackagesListKey {
+import commands.Keychain;
+
+public enum PackagesListKey implements Keychain {
 
     ALL,
     ASSOCIATED_APK_FILE("-f"),
@@ -24,6 +26,7 @@ public enum PackagesListKey {
     PackagesListKey() {
     }
 
+    @Override
     public String getKey() {
         return key;
     }
