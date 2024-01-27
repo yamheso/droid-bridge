@@ -11,11 +11,9 @@ public class RmCommand implements Command {
 
     private Keychain key;
     private String path;
-    private String newKey;
 
-    private RmCommand(Keychain key, String newKey, String path) {
+    private RmCommand(Keychain key, String path) {
         this.key = key;
-        this.newKey = newKey;
         this.path = path;
     }
 
@@ -23,7 +21,10 @@ public class RmCommand implements Command {
     public List<String> getCommandComponents() {
         List<String> commandComponents = new ArrayList<>();
         commandComponents.add("rm");
-        if (Objects.nonNull(key) && !key.equals(RmKey.NONE)) commandComponents.add(key.getKey());
+        if (Objects.nonNull(key)) {
+            assert key instanceof RmKey;
+            if (!key.equals(RmKey.NONE)) commandComponents.add(key.getKey());
+        }
         Objects.requireNonNull(path, "The path cannot be null");
         commandComponents.add(path);
         return commandComponents;
@@ -37,16 +38,10 @@ public class RmCommand implements Command {
     public static final class Builder {
 
         private Keychain key;
-        private String newKey;
         private String path;
 
         public RmCommand.Builder setKey(Keychain key) {
             this.key = key;
-            return this;
-        }
-
-        public RmCommand.Builder setKey(String newKey) {
-            this.newKey = newKey;
             return this;
         }
 
@@ -56,7 +51,7 @@ public class RmCommand implements Command {
         }
 
         public RmCommand build() {
-            return new RmCommand(key, newKey, path);
+            return new RmCommand(key, path);
         }
     }
 }
